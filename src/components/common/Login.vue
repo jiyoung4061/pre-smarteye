@@ -5,7 +5,7 @@
     <div class="wrapper">
         <router-link to="/main">
         <div class="logo-wrapper">
-          <img src="src/assets/캡처.png" class="logo">
+          <img src="../../assets/캡처.png" class="logo">
         </div>
 
         <div class="input-wrapper">

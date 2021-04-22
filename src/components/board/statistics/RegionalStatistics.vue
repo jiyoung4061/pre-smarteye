@@ -1,96 +1,131 @@
-<template lang="">
+<template>
 <div>
     <side-bar></side-bar>
-    <div id='content'>
-    <div class="pageTitle"> 
-        객체종류 지역별 통계
-    </div>
-    <br/>
-    <div>
-        검색기간
-        <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~ 
-        <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
-            
-        <!-- {{firstDate + " " + firstTime}}
-        {{lastDate + " " + lastTime}} -->
-    </div>
-    <br/>
-    <div>
-        객체 종류
-        <select name="selectingObject" v-model="selectObject" >
-            <option v-for="(object, index) in objectCategory" :key="index">
-                {{object}}
-            </option>
-        </select>
-        <button v-on:click="addObject(selectObject)">추가</button>
-    </div>
+    <div id="content">
+      <div class="title-wrapper">
+          <span class="title">객체종류 지역별 통계</span>
+      </div>
+      <div class="select-condition">
+        <table class="condition-table">
+              <colgroup>
+                <col width="15%">
+              </colgroup>
+              <tbody>
+                <tr class="condition-table-body">
+                  <td>검색기간</td>
+                  <td>
+                    <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~
+                    <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
+                    <!-- {{firstDate + " " + firstTime}}
+                    {{lastDate + " " + lastTime}} -->
+                  </td>
+                </tr>
+                <tr class="condition-table-body">
+                  <td>객체 종류</td>
+                  <td>
+                    <select name="selectingObject" v-model="selectObject" >
+                      <option v-for="(object, index) in objectCategory" :key="index">
+                          {{object}}
+                      </option>
+                    </select>
+                    <button class="button-add" v-on:click="addObject(selectObject)">추가</button>
+                  </td>
+                </tr>
+                <tr class="condition-table-body">
+                  <td></td>
+                  <td>
+                    <!--  <span v-for="(object,index) in objectArr" :key="index+1">
+            {{object}}
+            <span class="objectRemove" type="button" v-on:click="removeObject(index+1)">
+                <i class="closeBtn fas fa-times"></i>
+            </span>
+        </span> -->
+                    <span class="groupbutton">
+                        차
+                        <span class="groupremove" type="button">
+                            <i class="closeBtn fas fa-times"></i>
+                        </span>
+                    </span>
+                    <span class="groupbutton">
+                        사람
+                        <span class="groupremove" type="button">
+                            <i class="closeBtn fas fa-times"></i>
+                        </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr class="condition-table-body">
+                  <td>검색 지역</td>
+                  <td>
+                    <select name="selectingArea1" v-model="selectArea1">
+                      <option value="경상북도">경상북도</option>
+                    </select>
+                    <select name="selectingArea2" v-model="selectArea2">
+                        <option value="고령군">고령군</option>
+                    </select>
+                    <button class="button-add" v-on:click="addArea(selectArea1, selectArea2)">추가</button>
+                  </td>
+                </tr>
+                <tr class="condition-table-body">
+                  <td></td>
+                  <td>
+                    <!-- <span v-for="(area,index) in areaArr" :key="index">
+                        {{area}}
+                        <span class="areaRemove" type="button" v-on:click="removeArea(index)">
+                            <i class="closeBtn fas fa-times"></i>
+                        </span>
+                    </span> -->
+                    <span class="groupbutton">
+                        서귀포 남원읍
+                        <span class="groupremove" type="button">
+                            <i class="closeBtn fas fa-times"></i>
+                        </span>
+                    </span>
 
-    <span v-for="(object,index) in objectArr" :key="index+1">
-        {{object}}
-        <span class="objectRemove" type="button" v-on:click="removeObject(index+1)">
-            <i class="closeBtn fas fa-times"></i>
-        </span>
-    </span>    
-
-    <br/>
-    <div>
-        검색 지역
-        <select name="selectingArea1" v-model="selectArea1">
-            <option value="경상북도">경상북도</option>
-        </select>
-        <select name="selectingArea2" v-model="selectArea2">
-            <option value="고령군">고령군</option>
-        </select>
-        <button v-on:click="addArea(selectArea1, selectArea2)">추가</button>
-        <div class="searchBtn">
-            <button v-on:click="searchObjectArea(firstDate,firstTime,lastDate,lastTime)">
-                조회
-            </button>
-            <button v-on:click="makeExcelFile()">
-                내보내기
-            </button>
+                  </td>
+                  </tr>
+              </tbody>
+        </table>
+        <button class="button-cancle" v-on:click="makeExcelFile()">내보내기</button>
+        <button class="button-add" v-on:click="searchObjectArea(firstDate,firstTime,lastDate,lastTime)">조회</button>
+        <div class="content-result">
+              <table class="table1">
+                <colgroup>
+                    <col width="200px">
+                    <col width="200px">
+                    <col width="200px">
+                    <col width="150px">
+                    <col width="600px">
+                </colgroup>
+                  <thead>
+                      <tr class="table1-head-title">
+                          <th>지역</th>
+                          <th>차</th>
+                          <th>사람</th>
+                          <th>합계</th>
+                          <th>차트</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <!-- <tr class="table1-body" v-for="(data,index) in searchData" :key="index">
+                          <td>{{data.area}}</td>
+                        <td>{{data.car}}({{data.carPercent}}%)</td>
+                        <td>{{data.person}}({{data.personPercent}}%)</td>
+                        <td>{{data.sum}}</td>
+                      </tr> -->
+                      <tr class="table1-body" >
+                          <td>area</td>
+                          <td>data.car</td>
+                          <td>person</td>
+                          <td>.sum</td>
+                          <td rowspan="10">
+                            <!-- <pie-chart :data="chartData" :options="chartOptions"></pie-chart> -->
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
         </div>
-    </div>
-    <br/>
-    <span v-for="(area,index) in areaArr" :key="index">
-        {{area}}
-        <span class="areaRemove" type="button" v-on:click="removeArea(index)">
-            <i class="closeBtn fas fa-times"></i>
-        </span>
-    </span>
-    
-    <div>
-        <table class="firstTable">
-            <thead>
-                <tr class="tTitle1">
-                    <th>지역</th>
-                    <th>차</th>
-                    <th>사람</th>
-                    <th>합계</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="tBody1" v-for="(data,index) in searchData" :key="index">
-                    <td>{{data.area}}</td>
-                    <td>{{data.car}}({{data.carPercent}}%)</td>
-                    <td>{{data.person}}({{data.personPercent}}%)</td>
-                    <td>{{data.sum}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="secondTable">
-            <thead>
-                <tr class="tTitle2">
-                    <th>통계</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="tBody2">
-                    <td v-if='showChart'><pie-chart  :data="chartData" :options="chartOptions"></pie-chart></td>                 
-                </tr>
-            </tbody>
-        </table>
-    </div>
+      </div>
     </div>
 </div>
 </template>
@@ -117,8 +152,8 @@ export default {
             firstDate:'',
             firstTime:'',
             lastDate:'',
-            lastTime:'', 
-            
+            lastTime:'',
+
             //테이블 출력 데이터 모아논 배열
             searchData:[],
 
@@ -229,7 +264,7 @@ export default {
                 }
                 for(let i=0; i<this.searchData.length; i++){
                     for(let j=0; j<this.getObjectAreaData.length; j++){
-                        if(this.isbetweenDate(fDateTime,lDateTime,this.getObjectAreaData[j].created_at) 
+                        if(this.isbetweenDate(fDateTime,lDateTime,this.getObjectAreaData[j].created_at)
                         && this.areaArr[i]==this.getObjectAreaData[j].area1+" "+this.getObjectAreaData[j].area2){
                             for(let k=0; k<this.objectArr.length; k++){
                                 if((this.objectArr.length>0) && (this.objectArr[k]=="차") && (this.getObjectAreaData[j].car == "o")){
@@ -304,63 +339,23 @@ export default {
 
     },
     beforeMount(){
-        
+
     },
     mounted() {
         this.getObjectAreaToJson()
-    
+
     },
     beforeUpdate(){ //데이터 변경되면 가상돔을 화면을 다시 그리기 전에 호출
-        
+
     },
     updated(){ // 화면이 그려고 나면 호출
 
     },
     beforeDestroy(){
-        
+
     }
 
 }
 </script>
 <style lang="">
-#content {
-    padding-left: 270px;
-}
-
-table {
-    width:100%;
-    border-collapse: collapse;
-    border: 1px solid black;
-    text-align:center;
-    table-layout: fixed;
-}
-tr{
-    vertical-align : top;
-}
-.searchBtn{
-    float: right;
-}
-.tTitle1 {
-    border-left: 1px solid;
-    border-bottom: 1px solid ;
-}
-.tTitle2{
-    border-bottom: 1px solid ;
-}
-.tBody2{
-    border-left: 1px solid;
-}
-.firstTable{
-    width:55%;
-    float:left;
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: 0px;
-}
-.secondTable{
-    width:45%;
-    float:right;
-    border-left: 1px;
-    border-bottom: 1px solid;
-}
 </style>

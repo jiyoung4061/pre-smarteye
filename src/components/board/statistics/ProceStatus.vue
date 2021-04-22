@@ -1,94 +1,128 @@
 <template>
 
-<div div id="app">
+<div id="app">
     <side-bar></side-bar>
-    <div id='content'>
-    <div class="pageTitle"> 
-        처리 현황 통계
+    <div id="content">
+    <div class="title-wrapper">
+      <span class="title">처리 현황 통계</span>
     </div>
-    <div>
-        검색기간
-        <!-- <input type="text" class='datepicker-here'  v-model="firstDate"  data-timepicker="true" data-language='ko'  timeFormat= "hh:ii"/> ~ 
+    <div class="select-condition">
+      <table class="condition-table">
+          <colgroup>
+            <col width="15%">
+          </colgroup>
+          <tbody>
+            <tr class="condition-table-body">
+              <td>검색기간</td>
+              <td>
+                <!-- <input type="text" class='datepicker-here'  v-model="firstDate"  data-timepicker="true" data-language='ko'  timeFormat= "hh:ii"/> ~
         <input type="text" class='datepicker-here'  v-model="lastDate"  data-timepicker="true" data-language='ko'  timeFormat= "hh:ii aa"/> -->
-        <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~ 
+        <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~
         <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
-        
+
         <!-- {{firstDate + " " + firstTime}}
         {{lastDate + " " + lastTime}} -->
-    </div>
-    <br/>
-    <div>
-        CCTV
-        <select name="selectingCCTV" v-model="cctvId">
-            <option v-for="(cctvs, index) in getCCTVs" :key="index" v-bind:value="cctvs.id">
-                {{cctvs.cctv + cctvs.id}}
-            </option>
-        </select>
-        <button v-on:click="addCCTV(cctvId)">추가</button>
-    </div>
+              </td>
+            </tr>
+            <tr class="condition-table-body">
+              <td>CCTV</td>
+              <td>
+                <select name="selectingCCTV" v-model="cctvId">
+                  <option v-for="(cctvs, index) in getCCTVs" :key="index" v-bind:value="cctvs.id">
+                    {{cctvs.cctv + cctvs.id}}
+                  </option>
+                </select>
+                <button class="button-add" v-on:click="addCCTV(cctvId)">추가</button>
 
-    <span v-for="(cctv,index) in cctvsNameArr" :key="cctv">
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span v-for="(cctv,index) in cctvsNameArr" :key="cctv">
         {{cctv}}
         <span class="cctvRemove" type="button" v-on:click="removeCCTV(index)">
             <i class="closeBtn fas fa-times"></i>
         </span>
     </span>
-    <br/>
-    <div>
-        관제사
-        <select name="selectingCCTV" v-model="controllerId" >
-            <option v-for="(controllers, index) in getControllers" :key="index" v-bind:value="controllers.id">
-                {{controllers.firstName + controllers.lastName + controllers.id}}
-            </option>
-        </select>
-        <button v-on:click="addController(controllerId)">추가</button>
-        <div class="searchBtn">
-            <button v-on:click="searchProcess()">
-                조회
-            </button>
-            <button v-on:click="makeExcelFile()">
-                내보내기
-            </button>
-        </div>
-    </div>
-    
-    <span v-for="(controller, index) in controllersNameArr"  :key="index" >
+                <!-- <span class="groupbutton">
+                    CCTV1
+                    <span class="groupremove" type="button">
+                        <i class="closeBtn fas fa-times"></i>
+                    </span>
+                </span>
+                <span class="groupbutton">
+                    CCTV2
+                    <span class="groupremove" type="button">
+                        <i class="closeBtn fas fa-times"></i>
+                    </span>
+                </span> -->
+              </td>
+            </tr>
+            <tr class="condition-table-body">
+              <td>관제사</td>
+              <td>
+                <select name="selectingCCTV" v-model="controllerId" >
+                  <option v-for="(controllers, index) in getControllers" :key="index" v-bind:value="controllers.id">
+                    {{controllers.firstName + controllers.lastName + controllers.id}}
+                  </option>
+                </select>
+                <button class="button-add" v-on:click="addController(controllerId)">추가</button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span v-for="(controller, index) in controllersNameArr"  :key="index" >
         {{controller}}
         <span class="cctvRemove" type="button" v-on:click="removeController(index)">
             <i class="closeBtn fas fa-times"></i>
         </span>
     </span>
-    <br/>
-    
-    
-    <div>
-        <table class="firstTable">
+                <!-- <span class="groupbutton">
+                  김태겸124
+                  <span class="groupremove" type="button">
+                    <i class="closeBtn fas fa-times"></i>
+                  </span>
+                </span> -->
+              </td>
+              </tr>
+          </tbody>
+        </table>
+        <div class="searchBtn">
+            <button class="button-cancle" v-on:click="makeExcelFile()">내보내기</button>
+            <button class="button-add" v-on:click="searchProcess()">조회</button>
+        </div>
+    </div>
+
+
+    <div class="content-result">
+        <table class="table1">
+          <colgroup>
+                <col width="200px">
+                <col width="200px">
+                <col width="200px">
+                <col width="150px">
+                <col width="600px">
+            </colgroup>
             <thead>
-                <tr class="tTitle1">
+                <tr class="table1-head-title">
                     <th>CCTV</th>
                     <th>관제사</th>
                     <th>이벤트 타입</th>
                     <th>처리 상황</th>
+                    <th>합계</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="tBody1" v-for="(value,index) in printProcess" :key="index">
-                    <td>{{value.cctvName}}</td>
+                <tr class="table1-body" v-for="(value,index) in printProcess" :key="index">
+                   <td>{{value.cctvName}}</td>
                     <td>{{value.controller}}</td>
                     <td>{{value.eventType}}</td>
                     <td>{{value.processSitu}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="secondTable">
-            <thead>
-                <tr class="tTitle2">
-                    <th>차트</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="tBody2">
-                   <td v-if='showChart'><pie-chart  :data="chartData" :options="chartOptions"></pie-chart></td> 
+                    <td rowspan="10">
+                      <!-- <pie-chart  :data="chartData" :options="chartOptions"></pie-chart> -->
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -109,7 +143,7 @@ export default {
     components:{
         PieChart,
         SideBar
-        
+
     },
     data(){
         return{
@@ -172,14 +206,14 @@ export default {
             .then((res) => {
                 //console.log('getCCTVs:', res.data)
                 this.getCCTVs = res.data
-            })            
+            })
         },
         getControllerToJson(){
             this.$http.get('http://localhost:3000/staData')
             .then((res) => {
                 //console.log('getCotrollers:', res.data)
                 this.getControllers = res.data
-                
+
             })
         },
         isExistCCTV(cctvId){
@@ -238,9 +272,9 @@ export default {
         searchProcess(){
             this.saveCid.splice(0)
             this.printProcess.splice(0)
-            
+
             console.log(typeof this.firstDate)
-            console.log(typeof this.firstTime)  
+            console.log(typeof this.firstTime)
             if( (this.cctvsIdArr.length) != 0 ){
                 for(var i=0; i<this.cctvsIdArr.length; i++){
                     for(var j=0; j<this.getControllers.length; j++){
@@ -276,7 +310,7 @@ export default {
                 for(var j=0; j<this.getControllers.length; j++){
                     if(this.saveCid[i] == this.getControllers[j].id){
                         this.printProcess.push({
-                            cId:this.getControllers[j].id,                            
+                            cId:this.getControllers[j].id,
                             cctvId:this.getControllers[j].cctvId,
                             cctvName:this.getControllers[j].cctvName,
                             controller:this.getControllers[j].firstName+this.getControllers[j].lastName,
@@ -287,14 +321,14 @@ export default {
                 }
             }
             this.chartDataPush()
-                       
+
         },
         getCCTTName(controllerId){
             for(var i=0; i<this.getCCTVs.length; i++){
                 if(controllerId == this.getCCTVs[i].id){
                     return this.getCCTVs[i].cctv;
                 }
-            }            
+            }
         },
         isExistCId(cid){
             var returnFlag = true
@@ -332,7 +366,7 @@ export default {
                 }else {
                     num4++;
                 }
-            }    
+            }
             // var num2 = this.chartArr[0]
              //배열 초기화
             this.chartData.datasets[0].data = [];
@@ -345,10 +379,10 @@ export default {
     mounted(){
         this.getCCTVsToJson();
         this.getControllerToJson();
-        
+
     },
     updated(){
-        
+
     },
     computed:{
 
@@ -361,44 +395,5 @@ export default {
 </script>
 
 <style scoped>
-#content {
-    padding-left: 270px;
-}
 
-table {
-    width:100%;
-    border-collapse: collapse;
-    border: 1px solid black;
-    text-align:center;
-    table-layout: fixed;
-}
-tr{
-    vertical-align : top;
-}
-.searchBtn{
-    float: right;
-}
-.tTitle1 {
-    border-left: 1px solid;
-    border-bottom: 1px solid ;
-}
-.tTitle2{
-    border-bottom: 1px solid ;
-}
-.tBody2{
-    border-left: 1px solid;
-}
-.firstTable{
-    width:60%;
-    float:left;
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: 0px;
-}
-.secondTable{
-    width:40%;
-    float:right;
-    border-left: 1px;
-    border-bottom: 1px solid;
-}
 </style>
