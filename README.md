@@ -24,4 +24,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 git add .
 git commit -m "메세지"
 git branch -M main
-git push -u origin main
+git push -u origin main# project_smarteye
