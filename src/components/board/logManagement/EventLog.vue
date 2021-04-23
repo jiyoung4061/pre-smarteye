@@ -1,80 +1,124 @@
-<template lang="">
+<template>
 <div>
-     <side-bar></side-bar>
-     <div id='content'>
-    <div class="pageTitle"> 
-        이벤트 로그
-    </div>
-    <br/>
-    <div>
-        검색기간
-        <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~ 
-        <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
-            
-        <!-- {{firstDate + " " + firstTime}}
-        {{lastDate + " " + lastTime}} -->
-    </div>
-    <div>
-        처리 상태
-        <select name="selectingProceStatus" v-model="selProceStat">
-            <option v-for="(value, index) in processingStat" :key="index">
-               {{value}}
-            </option>
-        </select>
-    </div>
-    <br/>
+    <side-bar></side-bar>
+    <div id="content">
+      <div class="title-wrapper">
+        <span class="title">이벤트 로그</span>
+      </div>
+    <div class="select-condition">
+      <table class="condition-table">
+        <colgroup>
+          <col width="15%">
+        </colgroup>
+        <tbody>
+          <tr class="condition-table-body">
+            <td>검색기간</td>
+            <td>
+              <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~
+              <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
 
-    <div>
-        CCTV
-        <select name="selectingCCTV" v-model="selCCTVId">
-            <option v-for="(cctvs, index) in getCCTVs" :key="index" v-bind:value="cctvs.id">
-                {{cctvs.name}}
-            </option>
-        </select>
-        <button v-on:click="addCCTV(selCCTVId)">추가</button>
-        {{cctvsIdArr}}
-        {{cctvsNameArr}}
-    </div>
-    
-    <span v-for="(cctv,index) in cctvsNameArr" :key="cctv">
+               <!-- {{firstDate + " " + firstTime}}
+              {{lastDate + " " + lastTime}} -->
+            </td>
+          </tr>
+
+
+
+
+          <tr class="condition-table-body">
+            <td>처리 상태</td>
+            <td>
+              <select name="selectingProceStatus" v-model="selProceStat">
+                  <option v-for="(value, index) in processingStat" :key="index">
+                          {{value}}
+                  </option>
+              </select>
+            </td>
+          </tr>
+
+
+
+          <tr class="condition-table-body">
+            <td>CCTV</td>
+            <td>
+              <select name="selectingCCTV" v-model="selCCTVId">
+                  <option v-for="(cctvs, index) in getCCTVs" :key="index" v-bind:value="cctvs.id">
+                            {{cctvs.name}}
+                  </option>
+              </select>
+              <button class="button-add" v-on:click="addCCTV(selCCTVId)">추가</button>
+                    {{cctvsIdArr}}
+                    {{cctvsNameArr}}
+            </td>
+          </tr>
+
+                <tr class="condition-table-body">
+                  <td></td>
+                  <td>
+                     <!-- <span class="groupbutton" v-for="(cctv,index) in cctvsNameArr" :key="cctv">
         {{cctv}}
-        <span class="cctvRemove" type="button" v-on:click="removeCCTV(index)">
+        <span class="groupremove" type="button" v-on:click="removeCCTV(index)">
             <i class="closeBtn fas fa-times"></i>
         </span>
-    </span>   
+    </span>   -->
+                    <span class="groupbutton">
+                        서귀포 남원읍
+                        <span class="groupremove" type="button">
+                            <i class="closeBtn fas fa-times"></i>
+                        </span>
+                    </span>
+                  </td>
+                </tr>
 
-    <br/>
-    <div>
-        이벤트 타입
-        <select name="selectingEvent" v-model="selEvent">
-            <option v-for="(event,index) in eventType" :key="index">
-                {{event}}
-            </option>
-        </select>
-        <button v-on:click="addEvent(selEvent)">추가</button>
-        {{eventPrintArr}}
-        {{eventArr}}
-        <div class="searchBtn">
-            <button v-on:click="searchEvent(firstDate,firstTime,lastDate,lastTime,selProceStat)">
-                조회
-            </button>
-            <button v-on:click="makeExcelFile()">
-                내보내기
-            </button>
-        </div>
-    </div>
-    <span v-for="(event,index) in eventPrintArr" :key="index">
+
+
+
+
+                  <tr class="condition-table-body">
+                    <td>이벤트 타입</td>
+                    <td>
+                      <select name="selectingEvent" v-model="selEvent">
+                        <option v-for="(event,index) in eventType" :key="index">
+                            {{event}}
+                        </option>
+                      </select>
+                      <button class="button-add" v-on:click="addEvent(selEvent)">추가</button>
+                        {{eventPrintArr}}
+                        {{eventArr}}
+                    </td>
+                  </tr>
+
+                  <tr class="condition-table-body">
+                  <td></td>
+                  <td>
+                   <!-- <span class="groupbutton" v-for="(event,index) in eventPrintArr" :key="index">
         {{event}}
-        <span class="eventRemove" type="button" v-on:click="removeEvent(index)">
+        <span class="groupremove" type="button" v-on:click="removeEvent(index)">
             <i class="closeBtn fas fa-times"></i>
         </span>
-    </span>
+    </span> -->
 
-    <br/>
-    <div>
-        <table class="tableAll">
-            <thead>
-                <tr class="tTitle">
+                    <span class="groupbutton">
+                        사람
+                        <span class="groupremove" type="button">
+                            <i class="closeBtn fas fa-times"></i>
+                        </span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+        </table>
+
+
+
+            <button class="button-cancle" v-on:click="makeExcelFile()">내보내기</button>
+            <button class="button-add" v-on:click="searchEvent(firstDate,firstTime,lastDate,lastTime,selProceStat)">조회</button>
+
+
+    <div class="content-result">
+              <table class="table1" style="width: 100%">
+                  <thead>
+                      <tr class="table1-head-title">
                     <th>시간</th>
                     <th>CCTV이름</th>
                     <th>이벤트 타입</th>
@@ -86,9 +130,9 @@
                     <!-- <th>오브젝트</th> -->
                 </tr>
             </thead>
-                                            
+
             <tbody>
-                <tr class="tBody" v-for="(value, index) in searchData" :key="index">
+                <!-- <tr class="table1-body" v-for="(value, index) in searchData" :key="index">
                     <td>{{value.time}}</td>
                     <td>{{value.cctvName}}</td>
                     <td>{{value.eventName}}</td>
@@ -98,12 +142,21 @@
                     <td>{{value.proceStat}}</td>
                     <!-- <td></td>
                     <td></td> -->
-                </tr>
+                <!-- </tr>  -->
+                 <tr class="table1-body" >
+                          <td>area</td>
+                          <td>data.car</td>
+                          <td>person</td>
+                          <td>.sum</td>
+                          <td>.sum</td>
+                          <td>.sum</td>
+                          <td>.sum</td>
+                  </tr>
             </tbody>
         </table>
     </div>
     </div>
-
+</div>
 </div>
 </template>
 
@@ -118,7 +171,7 @@ export default {
     },
     data(){
         return{
-            //json-server에서 가져온 데이터 
+            //json-server에서 가져온 데이터
             getCCTVs:[],
             getEventLogs:[],
 
@@ -134,7 +187,7 @@ export default {
             firstDate:'',
             firstTime:'',
             lastDate:'',
-            lastTime:'',  
+            lastTime:'',
 
             // 조건 검색 후 조회된 데이터
             searchData:[]
@@ -146,14 +199,14 @@ export default {
             .then((res) => {
                 console.log('getCCTVs:', res.data)
                 this.getCCTVs = res.data
-            })            
+            })
         },
         getEventLogsToJson(){
             this.$http.get('http://localhost:3000/event_logs')
             .then((res) => {
                 console.log('getEventLogs:', res.data)
                 this.getEventLogs = res.data
-            })            
+            })
         },
         addCCTV(cctvId){
             if(!this.isExistCCTV(cctvId)){
@@ -217,7 +270,7 @@ export default {
             const moment = require('moment');
             var fDateTime = firstDate+" "+firstTime
             var lDateTime = lastDate+" "+lastTime
-            var searchObj = [] 
+            var searchObj = []
 
             if(!firstDate&&!firstTime&&!lastDate&&!lastTime){
                 alert("기간을 입력하세요")
@@ -289,31 +342,4 @@ export default {
 </script>
 
 <style lang="">
-#content {
-    padding-left: 270px;
-}
-
-table {
-    width:100%;
-    border-collapse: collapse;
-    border: 1px solid black;
-    text-align:center;
-    table-layout: fixed;
-}
-tr{
-    vertical-align : top;
-}
-.searchBtn{
-    float: right;
-}
-.tTitle {
-    border: 1px solid black;
-    border-bottom: 1px solid ;
-    font-size:12px;
-}
-.tableAll{
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: 0px;
-}
 </style>
