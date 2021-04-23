@@ -1,45 +1,52 @@
-<template lang="">
+<template>
     <div>
         <side-bar></side-bar>
         <div id="content">
-        <div class="pageTitle"> 
-        시스템 로그
-        </div>
-        <br/>
-        <div>
-        검색기간
-            <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~ 
-            <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
-            
+          <div class="title-wrapper">
+          시스템 로그
+          </div>
+
+
+
+        <div class="select-condition">
+      <table class="condition-table">
+        <colgroup>
+          <col width="15%">
+        </colgroup>
+        <tbody>
+          <tr class="condition-table-body">
+            <td>검색기간</td>
+            <td>
+              <input type="date" v-model="firstDate"/><input type="time" v-model="firstTime"/> ~
+              <input type="date" v-model="lastDate"/><input type="time" v-model="lastTime"/>
             <!-- {{firstDate + " " + firstTime}}
             {{lastDate + " " + lastTime}} -->
-        </div>
-        <br/>
-        <div>
-            검색 조건 <input type="checkbox" v-model="loginCheck"> 로그인 <input type="checkbox" v-model="logoutCheck"> 로그아웃 <input type="checkbox" v-model="resetSet"> 설정 초기화
-        </div>
-        <div class="searchBtn">
-            <button v-on:click="searchLog(firstDate,firstTime,lastDate,lastTime,loginCheck,logoutCheck,resetSet)">
-                조회
-            </button>
-            <button v-on:click="makeExcelFile()">
-                내보내기
-            </button>
-        </div>
-        <br/>
-        <br/>
-        
-        <div>
-            <table>
-                <colgroup>
-                    <col width="20%">
-                    <col width="20%">
-                    <col width="20%">
-                    <col width="20%">
-                    <col width="20%">
-                </colgroup>
-                <thead>
-                    <tr class="tTitle">
+         </td>
+          </tr>
+
+
+
+
+          <tr class="condition-table-body">
+            <td>검색 조건</td>
+            <td>
+              <input id="checkbox-input" type="checkbox" v-model="loginCheck"> 로그인
+              <input id="checkbox-input" type="checkbox" v-model="logoutCheck"> 로그아웃
+              <input id="checkbox-input" type="checkbox" v-model="resetSet"> 설정 초기화
+            </td>
+          </tr>
+</tbody>
+        </table>
+
+            <button class="button-add" v-on:click="searchLog(firstDate,firstTime,lastDate,lastTime,loginCheck,logoutCheck,resetSet)">조회</button>
+            <button class="button-cancle" v-on:click="makeExcelFile()">내보내기</button>
+
+
+
+        <div class="content-result">
+              <table class="table1" style="width: 100%">
+                  <thead>
+                      <tr class="table1-head-title">
                         <th>시간</th>
                         <th>사용자</th>
                         <th>상대IP</th>
@@ -48,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <tr class="tBody" v-for="(value,index) in searchData" :key="index">
+                <tr class="table1-body" v-for="(value,index) in searchData" :key="index">
                     <td>{{value.created_at}}</td>
                     <td>{{value.user_name}}</td>
                     <td>{{value.remote_ip}}</td>
@@ -59,6 +66,7 @@
             </table>
         </div>
         </div>
+    </div>
     </div>
 </template>
 <script>
@@ -151,26 +159,9 @@ export default {
 </script>
 
 <style lang="">
-#content {
-    padding-left: 270px;
+#checkbox-input {
+  width: 15px;
+  margin-left: 10px;
+  vertical-align: middle;
 }
-
-.searchBtn{
-    float: right;
-}
-table {
-    width:100%;
-    border-collapse: collapse;
-    text-align:center;
-}
-.tTitle {
-    border: 1px solid black;
-    border-bottom: 1px solid ;
-}
-.tBody{
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: 0px;
-}
-
 </style>

@@ -140,9 +140,9 @@
                     <td>{{value.eventExplain}}</td>
                     <td>{{value.userName}}</td>
                     <td>{{value.proceStat}}</td>
-                    <!-- <td></td>
-                    <td></td> -->
-                <!-- </tr>  -->
+                    <td></td>
+                    <td></td>
+                </tr>  -->
                  <tr class="table1-body" >
                           <td>area</td>
                           <td>data.car</td>
